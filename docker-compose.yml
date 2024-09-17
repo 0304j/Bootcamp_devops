@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    image: php:apache
+    environment:
+       - USERNAME=fake_username
+       - PASSWORD=fake_password
+    volumes:
+       - ./website:/var/www/html
+    depends_on:
+       - api
+    ports:
+       - "80:80"
+    networks:
+       - pozo_network
+
+  api:
+    image: python:3.8-buster
+    volumes:
+       - ./student_age.json:/data/student_age.json
+    command: [ "python3", "./student_age.py" ]
+    ports:
+       - "5000:5000"
+    networks:
+       - pozo_network
+networks:
+       pozo_network:
